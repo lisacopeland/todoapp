@@ -4,7 +4,7 @@ export function deepCopy<T>(obj: T): T {
 
 export class TodoItem {
     id?: string;
-    userName?: string;
+    username?: string;
     dateAdded?: string;
     dueDate?: string;
     task?: string;

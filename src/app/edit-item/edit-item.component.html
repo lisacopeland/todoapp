@@ -1,0 +1,29 @@
+<div class="wrapper">
+  <h3>{{ editTitle }}</h3>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-item">
+      <label for="task">Task</label>
+      <input id="task" pInputText formControlName="task" />
+    </div>
+    <div class="form-item">
+      <label for="priority">Priority</label>
+      <p-knob
+        id="priority"
+        formControlName="priority"
+        [min]="1"
+        [max]="5"
+      ></p-knob>
+    </div>
+    <div class="form-item">
+      <label for="dueDate">Due Date</label>
+      <p-calendar id="dueDate" formControlName="dueDate"></p-calendar>
+    </div>
+    <button
+    pButton
+    pRipple
+    type="submit"
+    label="Save"
+    class="p-button-raised"
+  ></button>
+  </form>
+</div>

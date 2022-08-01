@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TodoItem } from './todo-item.mode.l';
+import { TodoItem } from './todo-item.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class TodoService {
 
   constructor(private http: HttpClient) { }
 
-  query(aid:string, search: Partial<TodoItem>): Observable<TodoItem[]> {
+  query(search: Partial<TodoItem>): Observable<TodoItem[]> {
     const searchObject: any = search;
     const url = this.apiUrl;
     console.log('going to url ', url, 'search: ', search)

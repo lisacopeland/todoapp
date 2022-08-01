@@ -1,0 +1,45 @@
+<div class="wrapper">
+  <div class="header">
+    <h1>Todo List for {{ username }}</h1>
+    <button
+      pButton
+      pRipple
+      type="button"
+      label="Add"
+      class="p-button-raised"
+      (click)="onAdd()"
+    ></button>
+  </div>
+  <div *ngIf="todoItems$ | async as todoItems">
+    <p-table
+      [value]="todoItems"
+      selectionMode="single"
+      [(selection)]="selectedTodoItem"
+      (onRowSelect)="onRowSelect()"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Due Date</th>
+          <th>Date Added</th>
+          <th>Task</th>
+          <th>Priority</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-todoItem>
+        <tr [pSelectableRow]="todoItem">
+          <td>{{ todoItem.dueDate }}</td>
+          <td>{{ todoItem.dateAdded }}</td>
+          <td>{{ todoItem.task }}</td>
+          <td>{{ todoItem.priority }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        Please add a Todo Item to get started
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<p-sidebar [(visible)]="editing" (onHide)="selectedTodoItem = null"
+  >
+  <app-edit-item *ngIf="!!selectedTodoItem" [todoItem]="selectedTodoItem"></app-edit-item
+></p-sidebar>
