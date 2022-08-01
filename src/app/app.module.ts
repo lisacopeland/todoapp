@@ -13,6 +13,12 @@ import {InputTextModule} from 'primeng/inputtext';
 import {CalendarModule} from 'primeng/calendar';
 import {KnobModule} from 'primeng/knob';
 import { EditItemComponent } from './edit-item/edit-item.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { appReducers } from './+state/app.reducer';
+import { TodoItemsEffects } from './+state/todo-item.effects';
+import { todoItemsReducer } from './+state/todo-item.reducer';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent, EditItemComponent],
@@ -29,6 +35,15 @@ import { EditItemComponent } from './edit-item/edit-item.component';
     InputTextModule,
     CalendarModule,
     AppRoutingModule,
+    StoreModule.forRoot(appReducers, {
+      metaReducers: !environment.production ? [] : [],
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true,
+      },
+    }),
+    StoreModule.forRoot({ todoItems: todoItemsReducer }),
+    EffectsModule.forRoot([TodoItemsEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -18,12 +18,22 @@
       <label for="dueDate">Due Date</label>
       <p-calendar id="dueDate" formControlName="dueDate"></p-calendar>
     </div>
-    <button
-    pButton
-    pRipple
-    type="submit"
-    label="Save"
-    class="p-button-raised"
-  ></button>
+    <div class="button-row">
+      <button
+        pButton
+        pRipple
+        type="submit"
+        label="Save"
+        class="p-button-raised"
+      ></button>
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Delete"
+        class="p-button-secondary"
+        (click)="onDelete()"
+      ></button>
+    </div>
   </form>
 </div>

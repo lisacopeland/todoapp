@@ -41,5 +41,5 @@
 </div>
 <p-sidebar [(visible)]="editing" (onHide)="selectedTodoItem = null"
   >
-  <app-edit-item *ngIf="!!selectedTodoItem" [todoItem]="selectedTodoItem"></app-edit-item
+  <app-edit-item *ngIf="!!selectedTodoItem" [todoItem]="selectedTodoItem" (action)="onSidebarHide()"></app-edit-item
 ></p-sidebar>

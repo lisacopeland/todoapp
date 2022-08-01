@@ -20,14 +20,15 @@ export class TodoService {
     return this.http.get<TodoItem[]>(url, { params });
   }
 
-  create(TodoItem: TodoItem): Observable<TodoItem> {
+  create(todoItem: TodoItem): Observable<TodoItem> {
     const url = this.apiUrl;
-    return this.http.post<TodoItem>(url, TodoItem);
+    console.log('going to post to ', url);
+    return this.http.post<TodoItem>(url, todoItem);
   }
 
-  update(TodoItem: TodoItem): Observable<TodoItem> {
+  update(todoItem: TodoItem): Observable<TodoItem> {
     const url = this.apiUrl;
-    return this.http.put<TodoItem>(url, TodoItem);
+    return this.http.put<TodoItem>(url, todoItem);
   }
 
   delete(username: string, id: string): Observable<TodoItem> {

@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { createTodoItemAction, deleteTodoItemAction, updateTodoItemAction } from '../+state/todo-item.actions';
 import { TodoItem } from '../todo-item.model';
 
 @Component({
@@ -9,19 +11,24 @@ import { TodoItem } from '../todo-item.model';
 })
 export class EditItemComponent implements OnInit {
   @Input() todoItem: TodoItem;
+  @Output() action = new EventEmitter<any>();
+
   editTitle = '';
   form: FormGroup;
+  newItem = false;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private store: Store) { }
 
   ngOnInit(): void {
     console.log('Hi from edit todoItem item is ', this.todoItem);
     if (this.todoItem.id === undefined) {
       console.log('this is new!!');
+      this.newItem = true;
       this.editTitle = 'New todo list item';
     } else {
       console.log('editing an existing!');
       this.editTitle = 'Edit existing todo list item';
+      this.newItem = false;
     }
     this.initForm();
   }
@@ -34,12 +41,25 @@ export class EditItemComponent implements OnInit {
     });
   }
 
+  onDelete() {
+    this.store.dispatch(deleteTodoItemAction({ id: this.todoItem.id }));
+    this.action.emit({ action: 'delete' });
+  }
+
   onSubmit() {
     const newTodo = new TodoItem(this.todoItem);
     newTodo.task = this.form.value.task;
     newTodo.priority = this.form.value.priority.toString();
     newTodo.dueDate = this.form.value.dueDate;
-    console.log('todoItem is now ', this.todoItem);
+    newTodo.dateAdded = new Date(this.todoItem.dateAdded).toISOString();
+    console.log('todoItem is now ', newTodo);
+    if (this.newItem) {
+      this.store.dispatch(createTodoItemAction({ payload: newTodo }));
+    } else {
+      this.store.dispatch(updateTodoItemAction({ changes: newTodo }));
+    }
+    this.action.emit({ action: 'save' });
+
   }
 
 }
