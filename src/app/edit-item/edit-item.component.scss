@@ -3,6 +3,12 @@
   flex-direction: column;
 }
 
+.header {
+  height: 50px;
+  background-color: lightgrey;
+  margin-bottom: 50px;
+}
+
 .form-item {
   display: flex;
   flex-direction: column;

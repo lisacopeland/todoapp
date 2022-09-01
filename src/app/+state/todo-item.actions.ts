@@ -5,7 +5,7 @@ import { TodoItem } from '../todo-item.model';
 
 export const loadTodoItemsAction = createAction(
     'TodoItems: Load All',
-    props<{ search: Partial<TodoItem> }>()
+    props<{ search: Partial<TodoItem>, index: string }>()
 )
 export const setTodoItemsAction = createAction(
     'TodoItems: Set All',

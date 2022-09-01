@@ -9,40 +9,6 @@ import { selectAllTodoItems } from './+state/todo-item.reducer';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  title = 'TodoApp';
-  username = 'Lisa';
-  constructor(private store: Store) {}
+export class AppComponent {
 
-  todoItems$ = this.store.select(selectAllTodoItems);
-
-  editing = false;
-  selectedTodoItem: TodoItem = null;
-
-  ngOnInit() {
-    this.store.dispatch(loadTodoItemsAction({ search: { username: 'Lisa '} }));
-
-  }
-
-  onAdd() {
-    console.log('going to create a new todoItem');
-    this.selectedTodoItem = new TodoItem({
-      username: this.username,
-      dateAdded: new Date().toDateString(),
-      priority: '5',
-      dueDate: new Date().toDateString(),
-      task: 'Water the plants'
-    });
-    console.log('selectedTodoItem is ', this.selectedTodoItem);
-    this.editing = true;
-  }
-
-  onRowSelect() {
-    console.log('selectedTodoItem is ', this.selectedTodoItem);
-    this.editing = true;
-  }
-
-  onSidebarHide() {
-    this.selectedTodoItem = null;
-  }
 }

@@ -8,12 +8,16 @@ import { TodoItem } from './todo-item.model';
 })
 export class TodoService {
 
-  apiUrl = `http://localhost:5263/todo`;
+  apiUrl = `http://localhost:7179/todo`;
 
   constructor(private http: HttpClient) { }
 
-  query(search: Partial<TodoItem>): Observable<TodoItem[]> {
-    const searchObject: any = search;
+  query(search: Partial<TodoItem>, sortBy?: string): Observable<TodoItem[]> {
+    const searchObject: any = {...search};
+    if (sortBy !== undefined && sortBy !== '') {
+      searchObject.sortBy = sortBy;
+    }
+
     const url = this.apiUrl;
     console.log('going to url ', url, 'search: ', search)
     const params = new HttpParams({ fromObject: searchObject });

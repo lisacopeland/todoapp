@@ -20,7 +20,7 @@ export class TodoItemsEffects {
         this.actions$.pipe(
             ofType(loadTodoItemsAction),
             mergeMap((action) => {
-                return this.service.query({username: 'Lisa'}).pipe(
+                return this.service.query(action.search, action.index).pipe(
                     map((response) => {
                         return setTodoItemsAction({ payload: response });
                     })

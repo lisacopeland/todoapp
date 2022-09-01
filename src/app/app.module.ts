@@ -4,10 +4,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
 import {SliderModule} from 'primeng/slider';
 import {InputTextModule} from 'primeng/inputtext';
 import {CalendarModule} from 'primeng/calendar';
@@ -19,17 +20,20 @@ import { appReducers } from './+state/app.reducer';
 import { TodoItemsEffects } from './+state/todo-item.effects';
 import { todoItemsReducer } from './+state/todo-item.reducer';
 import { environment } from '../environments/environment';
+import { TodoTableComponent } from './todo-table/todo-table.component';
 
 @NgModule({
-  declarations: [AppComponent, EditItemComponent],
+  declarations: [AppComponent, EditItemComponent, TodoTableComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule,
     ReactiveFormsModule,
     TableModule,
     SidebarModule,
     ButtonModule,
+    DropdownModule,
     SliderModule,
     KnobModule,
     InputTextModule,
