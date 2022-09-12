@@ -28,7 +28,7 @@ const initialState: TodoItemsState = {
     todoItemsLoaded: false
 };
 
-export const TodoItems_FEATURE_KEY = 'todoItems';
+export const TODOITEMS_FEATURE_KEY = 'todoItems';
 
 export const todoItemsReducer = createReducer(
     initialState,
@@ -81,7 +81,7 @@ export const todoItemsReducer = createReducer(
     })
 );
 
-export const getTodoItemsState = createFeatureSelector<TodoItemsState>(TodoItems_FEATURE_KEY);
+export const getTodoItemsState = createFeatureSelector<TodoItemsState>(TODOITEMS_FEATURE_KEY);
 
 export const selectAll = createSelector(
     getTodoItemsState,

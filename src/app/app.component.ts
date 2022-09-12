@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { TodoItem } from './todo-item.model';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { loadTodoItemsAction } from './+state/todo-item.actions';
-import { selectAllTodoItems } from './+state/todo-item.reducer';
+import { selectUserEmail, selectUserLoggedIn } from './auth/+state/auth.reducers';
+import { Router } from '@angular/router';
+import { userLoggedOutAction } from './auth/+state/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +11,24 @@ import { selectAllTodoItems } from './+state/todo-item.reducer';
 })
 export class AppComponent {
 
+  email = null;
+  constructor(private store: Store, private router: Router) { }
+
+  ngOnInit() {
+    this.store.select(selectUserLoggedIn).subscribe(loggedIn => {
+      if (loggedIn) {
+        this.router.navigate(['/todos']);
+      }
+    });    
+    this.store.select(selectUserEmail).subscribe(email => {
+      if (email !== null) {
+        this.email = email;
+      }
+    });
+  }
+
+  onSignout() {
+    localStorage.removeItem('jwt');
+    this.store.dispatch(userLoggedOutAction({ payload: {} }));
+  }
 }

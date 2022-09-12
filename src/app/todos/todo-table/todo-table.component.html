@@ -1,13 +1,17 @@
 <div class="wrapper">
     <div class="header">
-        <h1>Todo List for {{ username }}</h1>
-        <div>
+        <h2>Todo List for {{ email }}</h2>
+        <div class="searchbar">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText [(ngModel)]="searchSelection" (ngModelChange)="onSearchChange($event)" placeholder="Search">
+            </span>
             <p-dropdown [options]="sortOptions" [(ngModel)]="sortSelection" placeholder="Sort By" optionValue="name" optionLabel="name"
                 [showClear]="true" (onChange)="onSortChange()"></p-dropdown>
-    
-        <button pButton pRipple type="button" label="Add" class="p-button-raised" (click)="onAdd()"></button>
+            <button pButton pRipple type="button" label="Add" class="p-button-raised" (click)="onAdd()"></button>
         </div>
     </div>
+    <div class="table-wrapper">
     <div *ngIf="todoItems$ | async as todoItems">
         <p-table [value]="todoItems" selectionMode="single" [(selection)]="selectedTodoItem"
             (onRowSelect)="onRowSelect()">
@@ -31,6 +35,7 @@
                 Please add a Todo Item to get started
             </ng-template>
         </p-table>
+    </div>
     </div>
 </div>
 <p-sidebar [(visible)]="editing" (onHide)="selectedTodoItem = null" appendTo="body" [style]="{width:'50%'}">

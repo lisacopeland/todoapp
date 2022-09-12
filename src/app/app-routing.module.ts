@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TodoTableComponent } from './todo-table/todo-table.component';
+import { AuthGuard } from './auth/auth.guard';
+import { SigninComponent } from './auth/signin/signin.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/todotable', pathMatch: 'full' },
-  { path: 'todotable', component: TodoTableComponent },
+  { path: '', redirectTo: '/todos', pathMatch: 'full' },
+  { path: 'todos', loadChildren: () => import('./todos/todos.module').then(m => m.TodosModule) },
+  { path: 'signin', component: SigninComponent },  
+  { path: 'signup', component: SignupComponent },
 ];
 
 @NgModule({

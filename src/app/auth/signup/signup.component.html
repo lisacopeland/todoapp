@@ -1,0 +1,19 @@
+<div>
+    <h3>Enter your email and password to sign up</h3>
+    <form class="form-layout" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="email">Email</label>
+            <input id="email" pInputText type="email" formControlName="email">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input id="password" pInputText type="password" formControlName="password">
+        </div>
+
+        <div class="button-row">
+            <button pButton pRipple type="submit" [disabled]="!form.valid" label="Sign up"
+                class="p-button-raised"></button>
+        </div>
+    </form>
+    <div *ngIf="errorMessage">{{errorMessage}}</div>
+</div>

@@ -1,1 +1,10 @@
+<div class="header">
+    <h1>
+        Todo App
+    </h1>
+    <div *ngIf="email !== null">
+      <h1>Hi {{email}}</h1>
+      <button (click)="onSignout()">Logout</button>
+    </div>
+</div>
 <router-outlet></router-outlet>

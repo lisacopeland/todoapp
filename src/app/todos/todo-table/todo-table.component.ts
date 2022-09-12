@@ -1,8 +1,10 @@
-import { Component, OnInit, ɵisDefaultChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TodoItem } from '../todo-item.model';
 import { Store } from '@ngrx/store';
 import { loadTodoItemsAction } from '../+state/todo-item.actions';
 import { selectAllTodoItems } from '../+state/todo-item.reducer';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { selectUserEmail } from '../../auth/+state/auth.reducers';
 
 @Component({
   selector: 'app-todo-table',
@@ -11,10 +13,12 @@ import { selectAllTodoItems } from '../+state/todo-item.reducer';
 })
 export class TodoTableComponent implements OnInit {
 
-  username = 'Lisa';
   constructor(private store: Store) { }
 
+  email = null;
   todoItems$ = this.store.select(selectAllTodoItems);
+  searchSelection = '';
+  searchInput: Subject<string> = new Subject();
   sortSelection = null;
   sortOptions = [
     {
@@ -32,26 +36,38 @@ export class TodoTableComponent implements OnInit {
   selectedTodoItem: TodoItem = null;
 
   ngOnInit() {
-    this.store.dispatch(loadTodoItemsAction({ search: { username: 'Lisa' }, index: '' }));
+    this.store.select(selectUserEmail).subscribe(email => {
+      if (email !== null) {
+        this.email = email;
+        this.store.dispatch(loadTodoItemsAction({ search: { username: this.email }, index: '' }));
+      }
+    });    
+     this.searchInput.pipe(debounceTime(500), distinctUntilChanged()).subscribe(value => {
+      console.log('search value is now ', value);
+    });
   }
 
   onSortChange() {
     console.log('current sort selection is ', this.sortSelection);
     if (this.sortSelection === null) {
       // use the general query
-      this.store.dispatch(loadTodoItemsAction({ search: { username: 'Lisa' }, index: '' }));
+      this.store.dispatch(loadTodoItemsAction({ search: { username: this.email }, index: '' }));
 
     } else {
       const index = this.sortSelection + '-index';
-      this.store.dispatch(loadTodoItemsAction({ search: { username: 'Lisa' }, index: index }));
+      this.store.dispatch(loadTodoItemsAction({ search: { username: this.email }, index: index }));
 
     }
+  }
+
+  onSearchChange(event) {
+    this.searchInput.next(event);
   }
 
   onAdd() {
     console.log('going to create a new todoItem');
     this.selectedTodoItem = new TodoItem({
-      username: this.username,
+      username: this.email,
       dateAdded: new Date().toDateString(),
       priority: '5',
       dueDate: new Date().toDateString(),
