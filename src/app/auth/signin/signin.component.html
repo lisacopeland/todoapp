@@ -1,12 +1,12 @@
-<div>
+<div class="page-wrapper">
     <h3>Enter your email and password to sign in</h3>
     <form class="form-layout" [formGroup]="form" (ngSubmit)="onSubmit()">
         <div>
-            <label for="email">Email</label>
+            <label class="label" for="email">Email</label>
             <input id="email" pInputText type="email" formControlName="email">
         </div>
         <div>
-            <label for="password">Password</label>
+            <label class="label" for="password">Password</label>
             <input id="password" pInputText type="password" formControlName="password">
         </div>
 
@@ -14,5 +14,6 @@
            <button pButton pRipple type="submit" [disabled]="!form.valid" label="Sign in" class="p-button-raised"></button>
         </div>
     </form>
+    <a routerLink="auth/signup">Switch to Signup</a>
     <div *ngIf="errorMessage">{{errorMessage}}</div>
 </div>
