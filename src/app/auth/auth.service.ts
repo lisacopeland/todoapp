@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import * as moment from 'moment';
 
 export interface SigninResponse {
-    AccessToken: string;
-    ExpiresIn: number;
-    RefreshToken: string;
+    accessToken: string;
+    expiresIn: number;
+    refreshToken: string;
 }
 
 @Injectable({
@@ -70,6 +71,20 @@ export class AuthService {
 
     isLoggedIn(): boolean {
       const jwt = localStorage.getItem('jwt');
-      return (jwt !== null);
+      if (jwt === null) {
+        return false;
+      }
+      const expiresAt = moment(localStorage.getItem('expiresAt'));
+      const now = moment();
+      if (expiresAt.isBefore(now)) {
+        // You have a token but its expired
+        localStorage.removeItem('jwt');
+        localStorage.removeItem('email');
+        localStorage.removeItem('expiresAt');
+        return false;
+      } else {
+        return true;
+      }
+
     }
 }

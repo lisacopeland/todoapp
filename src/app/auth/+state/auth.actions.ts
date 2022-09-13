@@ -8,6 +8,10 @@ export const setUserAction = createAction(
     'Auth: Set User',
     props<{ payload: { email: string } }>()
 )
+export const checkLoginState = createAction(
+    'Auth: Check Logged In state',
+    props<{ payload: {} }>()
+)
 export const setAuthErrorAction = createAction(
     'Auth: Sign in Error',
     props<{ payload: { error: string } }>()

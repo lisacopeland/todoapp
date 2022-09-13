@@ -3,7 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { TodoTableComponent } from "./todo-table/todo-table.component";
 
 const routes: Routes = [
-    { path: '', redirectTo: '/todotable', pathMatch: 'full' },    
+    { path: '', redirectTo: 'todotable', pathMatch: 'full' },    
     { path: 'todotable', component: TodoTableComponent }
 ];
 

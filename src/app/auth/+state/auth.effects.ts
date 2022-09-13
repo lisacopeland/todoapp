@@ -2,7 +2,8 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { AuthService } from "../auth.service";
 import { mergeMap, map } from "rxjs";
-import { confirmSignupUserAction, loginAction, logOutUserAction, setAuthErrorAction, setUserAction, signedupConfirmedAction, signupUserAction, userLoggedOutAction, userSignedupAction } from "./auth.actions";
+import { checkLoginState, confirmSignupUserAction, loginAction, logOutUserAction, setAuthErrorAction, setUserAction, signedupConfirmedAction, signupUserAction, userLoggedOutAction, userSignedupAction } from "./auth.actions";
+import * as moment from 'moment';
 
 @Injectable()
 export class AuthEffects {
@@ -21,8 +22,13 @@ export class AuthEffects {
                     map((response) => {
                         console.log('response from query : ', response);
                         if (response) {
-                            const jwt = response.AccessToken;
+                            const jwt = response.accessToken;
+                            const expiresIn = response.expiresIn; // Number of seconds
+                            const now = moment();
+                            const expiresAt = now.add(expiresIn, 'seconds');
                             localStorage.setItem('jwt', jwt);
+                            localStorage.setItem('email', action.payload.email);
+                            localStorage.setItem('expiresAt', expiresAt.format());
                             return setUserAction({ payload: { email: action.payload.email } });
                         } else {
                             return setAuthErrorAction({ payload: { error: "error"} })
@@ -31,6 +37,20 @@ export class AuthEffects {
                 );
             }, this.concurrentRequests)
         )
+    );
+
+    checkLoginState = createEffect(() =>
+      this.actions$.pipe(
+        ofType(checkLoginState),
+        map(() => {
+            if (this.service.isLoggedIn()) {
+                const email = localStorage.getItem('email');
+                return setUserAction({ payload: { email: email} });
+            } else {
+                return logOutUserAction({payload: {}});
+            }
+        }, this.concurrentRequests)
+      )
     );
 
     signUp$ = createEffect(() =>

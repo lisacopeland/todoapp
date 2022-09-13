@@ -26,6 +26,7 @@ export const authReducer = createReducer(
         const newState = initialState;
         return newState;
     }),
+    
     on(setUserAction, (state, action) => {
         const newState = { ...state, email: action.payload.email, userLoggedIn: true };
         return newState;

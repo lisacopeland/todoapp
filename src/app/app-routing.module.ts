@@ -6,7 +6,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/todos', pathMatch: 'full' },
-  { path: 'todos', loadChildren: () => import('./todos/todos.module').then(m => m.TodosModule) },
+  { path: 'todos', canLoad: [AuthGuard], canActivate: [AuthGuard], loadChildren: () => import('./todos/todos.module').then(m => m.TodosModule),  },
   { path: 'signin', component: SigninComponent },  
   { path: 'signup', component: SignupComponent },
 ];
