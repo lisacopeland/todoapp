@@ -38,6 +38,7 @@ export class AppComponent {
     localStorage.removeItem('jwt');
     localStorage.removeItem('expiresAt');
     localStorage.removeItem('email');
+    localStorage.removeItem('refreshToken');
     this.store.dispatch(logOutUserAction({ payload: {} }));
   }
 }

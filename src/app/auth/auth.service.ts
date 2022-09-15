@@ -43,6 +43,17 @@ export class AuthService {
         return this.http.post<string>(url, { params });
     }
 
+    refreshToken() {
+      const refreshToken = localStorage.getItem('refreshToken')
+      const authenticationDetails = {
+          RefreshToken: refreshToken,
+      };
+      const url = `${this.apiUrl}/refreshtoken`;
+      console.log('going to url ', url, 'search: ', authenticationDetails)
+      const params = new HttpParams({ fromObject: authenticationDetails });
+      return this.http.post<string>(url, { params });
+  }
+
     signOut() {
         localStorage.removeItem('jwt');
     }
@@ -51,7 +62,7 @@ export class AuthService {
         const authenticationDetails = {
             ConfirmationCode: confirmationCode,
             Email: email
-        };        
+        };
         const url = `${this.apiUrl}/confirm`;
         console.log('going to url ', url, 'search: ', authenticationDetails)
         const params = new HttpParams({ fromObject: authenticationDetails });
@@ -78,6 +89,7 @@ export class AuthService {
       const now = moment();
       if (expiresAt.isBefore(now)) {
         // You have a token but its expired
+        // TODO: Refresh the token
         localStorage.removeItem('jwt');
         localStorage.removeItem('email');
         localStorage.removeItem('expiresAt');

@@ -27,6 +27,7 @@ export class AuthEffects {
                             const now = moment();
                             const expiresAt = now.add(expiresIn, 'seconds');
                             localStorage.setItem('jwt', jwt);
+                            localStorage.setItem('refreshToken', response.refreshToken);
                             localStorage.setItem('email', action.payload.email);
                             localStorage.setItem('expiresAt', expiresAt.format());
                             return setUserAction({ payload: { email: action.payload.email } });
