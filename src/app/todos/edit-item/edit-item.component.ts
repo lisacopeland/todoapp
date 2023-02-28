@@ -40,7 +40,7 @@ export class EditItemComponent implements OnInit {
       dueDate: [new Date(this.todoItem.dueDate)],
     });
   }
-
+  
   onDelete() {
     this.store.dispatch(deleteTodoItemAction({ id: this.todoItem.id }));
     this.action.emit({ action: 'delete' });
@@ -51,7 +51,7 @@ export class EditItemComponent implements OnInit {
     newTodo.task = this.form.value.task;
     newTodo.priority = this.form.value.priority.toString();
     newTodo.dueDate = this.form.value.dueDate;
-    newTodo.dateAdded = new Date(this.todoItem.dateAdded).toISOString();
+    newTodo.dateAdded = new Date().toString();
     console.log('todoItem is now ', newTodo);
     if (this.newItem) {
       this.store.dispatch(createTodoItemAction({ payload: newTodo }));

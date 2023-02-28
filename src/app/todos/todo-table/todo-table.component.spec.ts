@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { StoreModule } from '@ngrx/store';
 
 import { TodoTableComponent } from './todo-table.component';
 
@@ -8,7 +9,8 @@ describe('TodoTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TodoTableComponent ]
+      declarations: [ TodoTableComponent ],
+      imports: [StoreModule.forRoot({})]
     })
     .compileComponents();
 
