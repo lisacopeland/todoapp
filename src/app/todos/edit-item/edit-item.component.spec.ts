@@ -9,6 +9,7 @@ import { todoItemsReducer, TodoItemsState, TODOITEMS_FEATURE_KEY } from '../+sta
 import { TodoItem } from '../todo-item.model';
 
 import { EditItemComponent } from './edit-item.component';
+import * as moment from 'moment';
 
 describe('EditItemComponent', () => {
   let component: EditItemComponent;
@@ -21,7 +22,7 @@ describe('EditItemComponent', () => {
     currentTodoItem: null,
     todoItems: [],
     todoItemsLoaded: false
-}; 
+};
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EditItemComponent],
@@ -48,9 +49,9 @@ describe('EditItemComponent', () => {
   it('should create component with item without id', () => {
     todoItem = new TodoItem({
       username: 'snoopy@hotmail.com',
-      dateAdded: new Date().toDateString(),
+      dateAdded: moment(new Date()).format('MM/DD/YY'),
       priority: '5',
-      dueDate: new Date().toDateString(),
+      dueDate: moment(new Date()).format('MM/DD/YY'),
       task: 'Water the plants',
     });
     component.todoItem = todoItem;
@@ -64,9 +65,9 @@ describe('EditItemComponent', () => {
     todoItem = new TodoItem({
       id: '3',
       username: 'snoopy@hotmail.com',
-      dateAdded: new Date().toDateString(),
+      dateAdded: moment(new Date()).format('MM/DD/YY'),
       priority: '5',
-      dueDate: new Date().toDateString(),
+      dueDate: moment(new Date()).format('MM/DD/YY'),
       task: 'Water the plants',
     });
     component.todoItem = todoItem;
@@ -79,9 +80,9 @@ describe('EditItemComponent', () => {
   it('should dispatch create on submit of a new item', () => {
     todoItem = new TodoItem({
       username: 'snoopy@hotmail.com',
-      dateAdded: '2023-02-28T08:00:00.000Z',
+      dateAdded: moment(new Date()).format('MM/DD/YY'),
       priority: '5',
-      dueDate: '2023-02-28T08:00:00.000Z',
+      dueDate: moment(new Date()).format('MM/DD/YY'),
       task: 'Water the plants',
     });
     const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();

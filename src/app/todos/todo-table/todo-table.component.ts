@@ -36,12 +36,13 @@ export class TodoTableComponent implements OnInit {
   selectedTodoItem: TodoItem = null;
 
   ngOnInit() {
+    // You should still check that the user is logged in
     this.store.select(selectUserEmail).subscribe(email => {
       if (email !== null) {
         this.email = email;
         this.store.dispatch(loadTodoItemsAction({ search: { username: this.email }, index: '' }));
       }
-    });    
+    });
      this.searchInput.pipe(debounceTime(500), distinctUntilChanged()).subscribe(value => {
       console.log('search value is now ', value);
     });

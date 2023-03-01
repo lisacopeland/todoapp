@@ -12,9 +12,10 @@ import { environment } from '../environments/environment';
 import { JwtInterceptor } from './auth/jwt.interceptor';
 import { AuthModule } from './auth/auth.module';
 import { AppEffects } from './+state/app.effects';
+import { CalendarComponent } from './calendar/calendar.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, CalendarComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
