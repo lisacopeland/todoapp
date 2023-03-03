@@ -12,20 +12,21 @@ import { selectAuthError } from '../+state/auth.reducers';
 export class SigninComponent implements OnInit {
 
   form: FormGroup;
-  errorMessage: string;
+  errorMessage: string = '';
   constructor(public fb: FormBuilder, private store: Store) { }
 
   ngOnInit(): void {
     this.store.select(selectAuthError).subscribe(error => {
       if (error) {
         this.errorMessage = error;
+        this.form.setValue({ email: '', password: ''});
       }
     });
 
     this.form = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
-    })      
+    })
   }
 
   onSubmit() {
