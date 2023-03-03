@@ -20,8 +20,7 @@ describe('EditItemComponent', () => {
   const initialState: TodoItemsState = {
     current: '',
     currentTodoItem: null,
-    todoItems: [],
-    todoItemsLoaded: false
+    todoItems: []
 };
   beforeEach(async () => {
     await TestBed.configureTestingModule({

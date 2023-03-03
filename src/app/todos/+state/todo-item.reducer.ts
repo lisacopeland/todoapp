@@ -18,14 +18,12 @@ export interface TodoItemsState {
     todoItems: TodoItem[];
     current: string;
     currentTodoItem: TodoItem;
-    todoItemsLoaded: boolean;
 }
 
 const initialState: TodoItemsState = {
     current: '',
     currentTodoItem: null,
     todoItems: [],
-    todoItemsLoaded: false
 };
 
 export const TODOITEMS_FEATURE_KEY = 'todoItems';
@@ -38,7 +36,7 @@ export const todoItemsReducer = createReducer(
     }),
     on(setTodoItemsAction, (state, action) => {
         console.log('setting TodoItems action!');
-        const newState = { ...state, todoItems: mapToTodoItems(action.payload), todoItemsLoaded: true };
+        const newState = { ...state, todoItems: mapToTodoItems(action.payload)};
         return newState;
     }),
     on(todoItemCreatedAction, (state, action) => {
@@ -89,10 +87,6 @@ export const selectAll = createSelector(
 );
 
 export const selectAllTodoItems = createSelector(selectAll, (state) => mapToTodoItems(state.todoItems)
-);
-
-export const selectTodoItemsLoaded = createSelector(selectAll, (state) =>
-    state.todoItemsLoaded
 );
 
 export const selectCurrentTodoItem = createSelector(selectAll, (state) =>

@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div id="todotablecomponent" class="wrapper">
     <div class="header">
         <h2>Todo List for {{ email }}</h2>
         <div class="searchbar">
@@ -13,7 +13,7 @@
     </div>
     <div class="table-wrapper">
     <div *ngIf="todoItems$ | async as todoItems">
-        <p-table [value]="todoItems" selectionMode="single" [(selection)]="selectedTodoItem"
+        <p-table id="todotable" [value]="todoItems" selectionMode="single" [(selection)]="selectedTodoItem"
             (onRowSelect)="onRowSelect()">
             <ng-template pTemplate="header">
                 <tr>
@@ -31,13 +31,13 @@
                     <td>{{ todoItem.priority }}</td>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="emptymessage">
+            <ng-template id="emptymessage" pTemplate="emptymessage">
                 Please add a Todo Item to get started
             </ng-template>
         </p-table>
     </div>
     </div>
 </div>
-<p-sidebar [(visible)]="editing" (onHide)="selectedTodoItem = null" appendTo="body" [style]="{width:'50%'}">
-    <app-edit-item *ngIf="!!selectedTodoItem" [todoItem]="selectedTodoItem" (action)="onSidebarHide()"></app-edit-item>
+<p-sidebar id="sidebar" [(visible)]="editing" (onHide)="selectedTodoItem = null" appendTo="body" [style]="{width:'50%'}">
+    <app-edit-item id="edititem" *ngIf="!!selectedTodoItem" [todoItem]="selectedTodoItem" (action)="onSidebarHide()"></app-edit-item>
 </p-sidebar>
