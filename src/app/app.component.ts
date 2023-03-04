@@ -13,7 +13,7 @@ export class AppComponent {
 
   email = null;
   constructor(private store: Store, private router: Router) { }
-
+  title = "Todo App";
   ngOnInit() {
 
     this.store.dispatch(checkLoginState({payload: {}}));

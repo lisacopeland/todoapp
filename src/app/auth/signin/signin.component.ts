@@ -19,7 +19,9 @@ export class SigninComponent implements OnInit {
     this.store.select(selectAuthError).subscribe(error => {
       if (error) {
         this.errorMessage = error;
-        this.form.setValue({ email: '', password: ''});
+        if (this.form) {
+          this.form.setValue({ email: '', password: ''});
+        }
       }
     });
 
@@ -30,6 +32,7 @@ export class SigninComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log('submit was clicked');
     this.store.dispatch(loginAction({ payload: { email: this.form.value.email, password: this.form.value.password } }))
   }
 

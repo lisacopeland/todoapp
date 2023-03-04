@@ -82,7 +82,7 @@ describe('EditItemComponent', () => {
       dateAdded: moment(new Date()).format('MM/DD/YY'),
       priority: '5',
       dueDate: moment(new Date()).format('MM/DD/YY'),
-      task: 'Water the plants',
+      task: 'Water the plants'
     });
     const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
     component.todoItem = todoItem;

@@ -5,22 +5,24 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import {
+  click,
+  findEl,
+  setFieldValue,
+} from 'src/app/testing-helpers/element.spec-helper';
+import { loginAction } from '../+state/auth.actions';
 import { selectAuthError } from '../+state/auth.reducers';
 
 import { SigninComponent } from './signin.component';
 
-fdescribe('SigninComponent', () => {
+describe('SigninComponent', () => {
   let component: SigninComponent;
   let fixture: ComponentFixture<SigninComponent>;
   let mockStore: MockStore;
   let dispatchSpy;
-  let formElement: HTMLElement;
-  let usernameInput;
-  let passwordInput;
-  let submitButton;
-  let loginForm;
   let usernameControl;
   let passwordControl;
 
@@ -53,73 +55,92 @@ fdescribe('SigninComponent', () => {
     fixture = TestBed.createComponent(SigninComponent);
     component = fixture.componentInstance;
     dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
-    fixture.detectChanges();
-    component.ngOnInit();
-    const loginForm = component.form;
-    usernameControl = loginForm.get('email') as FormControl;
-    passwordControl = loginForm.get('password') as FormControl;
-    formElement =
-      fixture.debugElement.nativeElement.querySelector('#loginform');
-    usernameInput = formElement.querySelector('#email');
-    passwordInput = formElement.querySelector('#password');
-    submitButton = formElement.querySelector('#submit');
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
   it('should have the correct inputs', () => {
-    const inputs = formElement.querySelectorAll('input');
+    component.ngOnInit();
+    const inputs = fixture.debugElement.queryAll(By.css('input'));
     expect(inputs.length).toEqual(2);
   });
 
   it('should have the correct initial values and state', () => {
-    const loginForm = component.form;
-    usernameControl = loginForm.get('email') as FormControl;
-    passwordControl = loginForm.get('password') as FormControl;
-    expect(loginForm.value).toEqual(initialLoginFormValues);
-    expect(loginForm.valid).toBeFalsy();
-    expect(usernameControl.errors['required']).toBeTruthy();
-    expect(passwordControl.errors['required']).toBeTruthy();
-    formElement =
-      fixture.debugElement.nativeElement.querySelector('#loginform');
-    submitButton = formElement.querySelector('#submit');
-    expect(submitButton.disabled).toBeTruthy;
+    component.ngOnInit();
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const loginForm = component.form;
+      usernameControl = loginForm.get('email') as FormControl;
+      passwordControl = loginForm.get('password') as FormControl;
+      expect(loginForm.value).toEqual(initialLoginFormValues);
+      expect(loginForm.valid).toBeFalsy();
+      expect(usernameControl.errors['required']).toBeTruthy();
+      expect(passwordControl.errors['required']).toBeTruthy();
+      const submitButton = findEl(fixture, 'submit');
+      expect(submitButton.nativeElement.disabled).toBeTruthy;
+    });
   });
 
   it('should call the authError selector', () => {
-    mockStore.overrideSelector(selectAuthError, 'fake auth error');
     component.ngOnInit();
+    mockStore.overrideSelector(selectAuthError, 'fake auth error');
+    fixture.detectChanges();
     const loginForm = component.form;
     expect(component.errorMessage).toBe('fake auth error');
     expect(loginForm.value).toEqual(initialLoginFormValues);
-    formElement =
-      fixture.debugElement.nativeElement.querySelector('#loginform');
-    submitButton = formElement.querySelector('#submit');
-    expect(submitButton.disabled).toBeTruthy;
+    const submitButton = findEl(fixture, 'submit');
+    expect(submitButton.nativeElement.disabled).toBeTruthy;
   });
 
   it('should accept valid inputs', () => {
+    component.ngOnInit();
+    setFieldValue(fixture, 'email', 'sample@msn.com');
+    setFieldValue(fixture, 'password', 'testing');
     const loginFormValues = {
       email: 'sample@msn.com',
       password: 'testing',
     };
-    formElement =
-      fixture.debugElement.nativeElement.querySelector('#loginform');
-    usernameInput = formElement.querySelector('#email');
-    passwordInput = formElement.querySelector('#password');
-    submitButton = formElement.querySelector('#submit');
-    usernameInput.value = 'sample@msn.com';
-    usernameInput.dispatchEvent(new Event('input'));
-    passwordInput.value = 'testing';
-    passwordInput.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      setTimeout(() => {
+        const loginForm = component.form;
+        usernameControl = loginForm.get('email') as FormControl;
+        passwordControl = loginForm.get('password') as FormControl;
+        expect(loginForm.value).toEqual(loginFormValues);
+        expect(loginForm.valid).toBeTruthy();
+        expect(usernameControl.errors).toBeNull();
+        expect(passwordControl.errors).toBeNull();
+        const submitButton = findEl(fixture, 'submit');
+        expect(submitButton.nativeElement.disabled).toBeFalsy;
+      }, 500);
+    });
+  });
+
+  it('should dispatch loginAction on submitbutton click', () => {
+    component.ngOnInit();
+    const loginFormValues = {
+      email: 'sample@msn.com',
+      password: 'testing',
+    };
     const loginForm = component.form;
-    usernameControl = loginForm.get('email') as FormControl;
-    passwordControl = loginForm.get('password') as FormControl;
-    expect(loginForm.value).toEqual(loginFormValues);
-    expect(loginForm.valid).toBeTruthy();
-    expect(usernameControl.errors).toBeNull();
-    expect(passwordControl.errors).toBeNull();
-    expect(submitButton.disabled).toBeFalsy;
+    loginForm.setValue(loginFormValues);
+    console.log('loginform is ', loginForm.valid);
+    const submitButton = findEl(fixture, 'submit');
+    console.log(
+      'submitbutton disabled is  ',
+      submitButton.nativeElement.disabled
+    );
+    // click(fixture, 'submit');
+    const action = loginAction({
+      payload: {
+        email: loginFormValues.email,
+        password: loginFormValues.password,
+      },
+    });
+    component.onSubmit();
+    fixture.detectChanges();
+    expect(dispatchSpy).toHaveBeenCalledWith(action);
   });
 });

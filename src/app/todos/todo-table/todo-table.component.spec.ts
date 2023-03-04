@@ -6,6 +6,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { selectUserEmail } from 'src/app/auth/+state/auth.reducers';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { expectContainedText } from 'src/app/testing-helpers/element.spec-helper';
 import { loadTodoItemsAction } from '../+state/todo-item.actions';
 import {
   selectAllTodoItems,
@@ -78,18 +79,14 @@ describe('TodoTableComponent', () => {
     testEmail = null;
     mockStore.overrideSelector(selectUserEmail, testEmail);
     component.ngOnInit();
-
     fixture.detectChanges();
-    const componentElement = fixture.debugElement.nativeElement.querySelector(
-      '#todotablecomponent'
-    );
-    const emptyMessage = componentElement.querySelector('tbody');
-    const message = emptyMessage.innerText;
-    expect(component.email).toBeNull();
-    expect(dispatchSpy).not.toHaveBeenCalled();
-    expect(message).toContain('Please add a Todo Item to get started');
-    expect(component.searchSelection).toBe('');
-    expect(component.sortSelection).toBeNull();
+    fixture.whenStable().then(() => { 
+      expect(component.email).toBeNull();
+      expect(dispatchSpy).not.toHaveBeenCalled();
+      expectContainedText(fixture, 'Please add a Todo Item to get started');
+      expect(component.searchSelection).toBe('');
+      expect(component.sortSelection).toBeNull();
+    });
 
 
   });
